@@ -1,0 +1,179 @@
+:host {
+  display: block;
+}
+
+.todo-card {
+  width: min(100% - 32px, 560px);
+  margin: 48px auto;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+h1 {
+  margin: 0 0 22px;
+  font-size: 1.7rem;
+}
+
+.add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.add-form input,
+.edit-form input {
+  min-width: 0;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  font: inherit;
+}
+
+.edit-form {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+
+button {
+  padding: 9px 12px;
+  color: #fff;
+  background: #315f42;
+  border: 0;
+  border-radius: 5px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.secondary-button {
+  color: #333;
+  background: #eee;
+}
+
+.delete-button {
+  background: #a43c32;
+}
+
+.list-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.list-heading h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.list-heading span {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.filters {
+  display: flex;
+  gap: 6px;
+  margin: 14px 0 8px;
+}
+
+.filters button {
+  padding: 6px 10px;
+  color: #333;
+  background: #eee;
+}
+
+.filters button.active {
+  color: #fff;
+  background: #315f42;
+}
+
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #315f42;
+}
+
+.todo-title {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.completed .todo-title {
+  color: #666;
+  text-decoration: line-through;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.empty-state {
+  margin: 0;
+  padding: 20px 0;
+  color: #555;
+}
+
+.add-error {
+  margin: 0 0 18px;
+  color: #762b24;
+}
+
+.load-error {
+  margin-top: 18px;
+  padding: 14px;
+  color: #762b24;
+  background: #fff0ed;
+  border: 1px solid #e3b8b1;
+  border-radius: 6px;
+}
+
+.load-error p {
+  margin: 0 0 12px;
+}
+
+@media (max-width: 480px) {
+  .todo-card {
+    margin: 20px auto;
+    padding: 20px 16px;
+  }
+
+  .add-form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .edit-form {
+    flex-wrap: wrap;
+  }
+
+  .todo-item {
+    gap: 7px;
+  }
+
+  .todo-actions {
+    gap: 4px;
+  }
+}

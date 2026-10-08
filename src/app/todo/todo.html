@@ -1,0 +1,131 @@
+<main class="todo-card">
+  <h1 id="todo-heading">My todos</h1>
+
+  <form class="add-form" (submit)="addTodo($event)">
+    <label class="visually-hidden" for="new-todo">Enter a todo</label>
+    <input
+      id="new-todo"
+      type="text"
+      placeholder="Enter a todo"
+      autocomplete="off"
+      [value]="newTodoText()"
+      [disabled]="isAdding()"
+      (input)="updateNewTodoText($event)"
+    />
+    <button type="submit" [disabled]="!newTodoText().trim() || isAdding()">
+      {{ isAdding() ? 'Adding...' : 'Add Todo' }}
+    </button>
+  </form>
+  @if (addErrorMessage()) {
+    <p class="add-error" role="alert">{{ addErrorMessage() }}</p>
+  }
+  @if (actionErrorMessage()) {
+    <p class="add-error" role="alert">{{ actionErrorMessage() }}</p>
+  }
+
+  <section aria-labelledby="list-heading">
+    <div class="list-heading">
+      <h2 id="list-heading">Todo list</h2>
+      <span>{{ remainingCount() }} left</span>
+    </div>
+
+    <nav class="filters" aria-label="Filter todos">
+      <button
+        type="button"
+        [class.active]="filter() === 'all'"
+        [attr.aria-pressed]="filter() === 'all'"
+        (click)="setFilter('all')"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        [class.active]="filter() === 'active'"
+        [attr.aria-pressed]="filter() === 'active'"
+        (click)="setFilter('active')"
+      >
+        To do
+      </button>
+      <button
+        type="button"
+        [class.active]="filter() === 'completed'"
+        [attr.aria-pressed]="filter() === 'completed'"
+        (click)="setFilter('completed')"
+      >
+        Done
+      </button>
+    </nav>
+
+    @if (isLoading()) {
+      <p class="empty-state" role="status">Loading todos...</p>
+    } @else if (errorMessage()) {
+      <div class="load-error" role="alert">
+        <p>{{ errorMessage() }}</p>
+        <button type="button" (click)="loadTodos()">Try again</button>
+      </div>
+    } @else if (todos().length === 0) {
+      <p class="empty-state">No todos yet.</p>
+    } @else if (visibleTodos().length > 0) {
+      <ul class="todo-list">
+        @for (todo of visibleTodos(); track todo.id) {
+          <li class="todo-item" [class.completed]="todo.completed">
+            @if (editingTodoId() === todo.id) {
+              <form class="edit-form" (submit)="saveEdit($event, todo.id)">
+                <label class="visually-hidden" [for]="'edit-todo-' + todo.id">Edit todo name</label>
+                <input
+                  [id]="'edit-todo-' + todo.id"
+                  type="text"
+                  [value]="editingText()"
+                  [disabled]="isSavingEdit()"
+                  (input)="updateEditingText($event)"
+                />
+                <button type="submit" [disabled]="!editingText().trim() || isSavingEdit()">
+                  {{ isSavingEdit() ? 'Saving...' : 'Save' }}
+                </button>
+                <button
+                  type="button"
+                  class="secondary-button"
+                  [disabled]="isSavingEdit()"
+                  (click)="cancelEdit()"
+                >
+                  Cancel
+                </button>
+              </form>
+            } @else {
+              <input
+                class="todo-checkbox"
+                type="checkbox"
+                [checked]="todo.completed"
+                [disabled]="true"
+                [attr.aria-label]="todo.title + (todo.completed ? ' (completed)' : ' (not completed)')"
+              />
+              <span class="todo-title">{{ todo.title }}</span>
+              <div class="todo-actions">
+                <button
+                  type="button"
+                  class="secondary-button"
+                  [disabled]="isDeletingTodoId() !== null"
+                  [attr.aria-label]="'Edit ' + todo.title"
+                  (click)="startEdit(todo)"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="delete-button"
+                  [disabled]="isDeletingTodoId() !== null"
+                  [attr.aria-label]="'Delete ' + todo.title"
+                  (click)="deleteTodo(todo.id)"
+                >
+                  {{ isDeletingTodoId() === todo.id ? 'Deleting...' : 'Delete' }}
+                </button>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="empty-state">No todos to show with this filter.</p>
+    }
+  </section>
+</main>
